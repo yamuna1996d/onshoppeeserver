@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "1012191730711",
+    "firebase_url": "https://onshoppee.firebaseio.com",
+    "project_id": "onshoppee",
+    "storage_bucket": "onshoppee.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1012191730711:android:3c68dd1f83f2db02",
+        "android_client_info": {
+          "package_name": "com.onshop.yamuna.onshoppeeserver"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "1012191730711-mcphbs0526i4dl9uag0m53t1g116o3hl.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCpkRrdpqoLF97pL9KnOfPxfUEOEqhm1Us"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "1012191730711-mcphbs0526i4dl9uag0m53t1g116o3hl.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

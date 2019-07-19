@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:orientation="vertical"
+    android:layout_height="match_parent"
+    tools:context=".MainActivity">
+
+    <ImageView
+        android:layout_width="300dp"
+        android:layout_height="100dp"
+        android:id="@+id/applog"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="60dp"
+        android:src="@drawable/applogo"/>
+    <com.rey.material.widget.Button
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/join"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentStart="true"
+        android:layout_marginBottom="10dp"
+        android:layout_marginRight="20dp"
+        android:layout_marginLeft="20dp"
+        android:padding="20dp"
+        android:textAllCaps="false"
+        android:text="Already Have account"
+        android:textColor="#ffff"/>
+    <com.rey.material.widget.Button
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/joinnow"
+        android:layout_above="@+id/join"
+        android:layout_marginBottom="5dp"
+        android:layout_marginRight="20dp"
+        android:layout_marginLeft="20dp"
+        android:padding="20dp"
+        android:textAllCaps="false"
+        android:text="Join"
+        android:textColor="#ffff"/>
+</RelativeLayout>

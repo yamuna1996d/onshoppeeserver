@@ -1,0 +1,63 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".Login">
+    <ImageView
+        android:layout_width="300dp"
+        android:layout_height="100dp"
+        android:id="@+id/applog"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="60dp"
+        android:src="@drawable/applogo"/>
+
+    <EditText
+        android:id="@+id/loginuser"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginLeft="15dp"
+        android:layout_marginTop="6dp"
+        android:layout_marginRight="15dp"
+        android:layout_marginBottom="243dp"
+        android:padding="20dp"
+        android:hint="Enter Your number"
+        android:textColor="@color/colorPrimary"
+        android:textColorHint="#a105a9"
+        android:textSize="20dp"
+        android:textStyle="bold"/>
+
+    <EditText
+        android:id="@+id/loginpass"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_marginLeft="15dp"
+        android:layout_marginTop="6dp"
+        android:layout_marginRight="15dp"
+        android:layout_marginBottom="144dp"
+        android:hint="Password"
+        android:padding="20dp"
+        android:textColor="@color/colorPrimary"
+        android:textColorHint="#a105a9"
+        android:textSize="20dp"
+        android:textStyle="bold" />
+
+
+    <com.rey.material.widget.Button
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/liner1"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentStart="true"
+        android:layout_marginBottom="30dp"
+        android:layout_marginRight="20dp"
+        android:layout_marginLeft="20dp"
+        android:background="@color/colorAccent"
+        android:padding="10dp"
+        android:textAllCaps="false"
+        android:text="Login"
+        android:textColor="#ffff"/>
+</RelativeLayout>
