@@ -23,6 +23,7 @@ import com.google.firebase.storage.OnProgressListener;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
 import com.onshop.yamuna.onshoppeeserver.Common.Common;
+import com.onshop.yamuna.onshoppeeserver.Interface.ItemClickListener;
 import com.onshop.yamuna.onshoppeeserver.Models.Category;
 import com.onshop.yamuna.onshoppeeserver.ViewHolder.MenuViewHolder;
 import com.rengwuxian.materialedittext.MaterialEditText;
@@ -220,6 +221,13 @@ public class Home extends AppCompatActivity
                 menuViewHolder.textmessage.setText(category.getName());
                 Picasso.with(getBaseContext()).load(category.getImage())
                         .into(menuViewHolder.imageview);
+
+                menuViewHolder.setItemClickListener(new ItemClickListener() {
+                    @Override
+                    public void onClick(View view, int position, boolean isLongClick) {
+
+                    }
+                });
             }
         };
         adapter.notifyDataSetChanged();
@@ -281,5 +289,117 @@ public class Home extends AppCompatActivity
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
         return true;
+    }
+
+    //update and delete functions
+    //press ctrl+o
+
+
+    @Override
+    public boolean onContextItemSelected(MenuItem item) {
+
+        if (item.getTitle().equals(Common.UPDATE)){
+            showUpdateDialoge(adapter.getRef(item.getOrder()).getKey(),adapter.getItem(item.getOrder()));
+        }
+        else{
+            if (item.getTitle().equals(Common.DELETE)){
+                deleteCategory(adapter.getRef(item.getOrder()).getKey());
+            }
+        }
+        return super.onContextItemSelected(item);
+    }
+
+    private void deleteCategory(String key) {
+        categories.child(key).removeValue();
+        Toast.makeText(this,"Spice deleted !!!!",Toast.LENGTH_SHORT).show();
+    }
+
+    private void showUpdateDialoge(final String key, final Category item) {
+        //copy from showDialoge
+        AlertDialog.Builder alert=new AlertDialog.Builder(Home.this);
+        alert.setTitle("Update Category");
+        alert.setMessage("Please Enter Full Information");
+        LayoutInflater inflater=this.getLayoutInflater();
+        View addspice=inflater.inflate(R.layout.addnewspice,null);
+        se=addspice.findViewById(R.id.txname);
+        btsel=addspice.findViewById(R.id.select);
+        btup=addspice.findViewById(R.id.upload);
+
+        se.setText(item.getName());
+
+        btsel.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                chooseImage(); //select image from gallery and save url in firebase
+            }
+        });
+
+        btup.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                changeImage(item);
+            }
+        });
+
+        alert.setView(addspice);
+        alert.setIcon(R.drawable.cart);
+        alert.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.dismiss();
+                item.setName(se.getText().toString());
+                categories.child(key).setValue(item);
+
+
+            }
+        });
+        alert.setNegativeButton("No", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.dismiss();
+            }
+        });
+        alert.show();
+
+    }
+
+    private void changeImage(final Category item) {
+        if (saveuri !=null){
+            final ProgressDialog pD=new ProgressDialog(this);
+            pD.setMessage("Uploading.......");
+            pD.show();
+
+            String imageName=UUID.randomUUID().toString();
+            final StorageReference imageFolder=storageReference.child("images/"+imageName);
+            imageFolder.putFile(saveuri).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+                @Override
+                public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+                    pD.dismiss();
+                    Toast.makeText(Home.this,"Uploaded !!!",Toast.LENGTH_SHORT).show();
+                    imageFolder.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
+                        @Override
+                        public void onSuccess(Uri uri) {
+
+                            item.setImage(uri.toString());
+                        }
+                    });
+                }
+            })
+                    .addOnFailureListener(new OnFailureListener() {
+                        @Override
+                        public void onFailure(@NonNull Exception e) {
+                            pD.dismiss();
+                            Toast.makeText(Home.this,""+e.getMessage(),Toast.LENGTH_SHORT).show();
+                        }
+                    }).addOnProgressListener(new OnProgressListener<UploadTask.TaskSnapshot>() {
+                @Override
+                public void onProgress(UploadTask.TaskSnapshot taskSnapshot) {
+                    double progress=(100.0 * taskSnapshot.getBytesTransferred()/taskSnapshot.getTotalByteCount());
+                    pD.setMessage("Uploaded"+progress+"%");
+                }
+            });
+
+        }
+
     }
 }

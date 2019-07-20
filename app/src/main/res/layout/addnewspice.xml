@@ -18,7 +18,7 @@
         android:layout_marginTop="6dp"
         android:layout_marginRight="15dp"
         android:layout_marginBottom="15dp"
-        android:hint="Name"
+        android:hint="Enter Spice Name"
         app:met_primaryColor="#fff"
         android:padding="20dp"
         android:textColor="@color/colorPrimary"
