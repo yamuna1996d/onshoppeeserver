@@ -63,7 +63,6 @@ public class Home extends AppCompatActivity
     Category newcategory; ///for new category
     Uri saveuri;
     DrawerLayout drawer;
-    private final int Pick_image=71;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -196,7 +195,7 @@ public class Home extends AppCompatActivity
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if (requestCode==Pick_image && resultCode==RESULT_OK && data!=null &&data.getData()
+        if (requestCode==Common.Pick_image && resultCode==RESULT_OK && data!=null &&data.getData()
                 !=null){
             saveuri=data.getData();
             btsel.setText("Image Selected !");
@@ -209,7 +208,7 @@ public class Home extends AppCompatActivity
         Intent intent=new Intent();
         intent.setType("image/*");
         intent.setAction(Intent.ACTION_GET_CONTENT);
-        startActivityForResult(Intent.createChooser(intent,"Select Picture"),Pick_image);
+        startActivityForResult(Intent.createChooser(intent,"Select Picture"),Common.Pick_image);
 
     }
 

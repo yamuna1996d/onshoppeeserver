@@ -1,24 +1,24 @@
 package com.onshop.yamuna.onshoppeeserver.Models;
 
 public class Spice {
-    private String Name,Price,Image,MenuId;
+    private String Name,Price,Image,menuId;
 
     public Spice() {
     }
 
-    public Spice(String name, String price, String image, String menuid) {
+    public Spice(String name, String price, String image, String menuId) {
         Name = name;
         Price = price;
         Image = image;
-        MenuId = menuid;
+        menuId = menuId;
     }
 
-    public String getMenuid() {
-        return MenuId;
+    public String getmenuId() {
+        return menuId;
     }
 
-    public void setMenuid(String menuid) {
-        MenuId = menuid;
+    public void setmenuId(String menuId) {
+        this.menuId = menuId;
     }
 
     public String getName() {
