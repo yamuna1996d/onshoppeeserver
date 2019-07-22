@@ -13,6 +13,7 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.view.LayoutInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.RelativeLayout;
 import android.widget.Toast;
@@ -218,5 +219,120 @@ public class Spicelist extends AppCompatActivity {
         };
         adapter.notifyDataSetChanged();
         recyclerView.setAdapter(adapter);
+    }
+
+    //press ctrl+o
+
+    @Override
+    public boolean onContextItemSelected(MenuItem item) {
+        if (item.getTitle().equals(Common.UPDATE)){
+            showUpdatespice(adapter.getRef(item.getOrder()).getKey(),adapter.getItem(item.getOrder()));
+
+        }
+        else if (item.getTitle().equals(Common.DELETE)){
+          deleteSpice(adapter.getRef(item.getOrder()).getKey());
+
+        }
+        return super.onContextItemSelected(item);
+
+    }
+
+    private void deleteSpice(String key) {
+        spicelist.child(key).removeValue();
+    }
+
+    private void showUpdatespice(final String key, final Spice item) {
+        AlertDialog.Builder alert=new AlertDialog.Builder(Spicelist.this);
+        alert.setTitle("Edit Spice");
+        alert.setMessage("Please Enter Full Information");
+        LayoutInflater inflater=this.getLayoutInflater();
+        View addspice=inflater.inflate(R.layout.new_spice_layout,null);
+        edname=addspice.findViewById(R.id.txname);
+        edprice=addspice.findViewById(R.id.txprice);
+        //set default value for view
+
+        edname.setText(item.getName());
+        edprice.setText(item.getPrice());
+
+
+        sel=addspice.findViewById(R.id.select);
+        upd=addspice.findViewById(R.id.upload);
+        sel.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                chooseImage(); //select image from gallery and save url in firebase
+            }
+        });
+
+        upd.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                changeImgae(item);
+            }
+        });
+
+        alert.setView(addspice);
+        alert.setIcon(R.drawable.cart);
+        alert.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.dismiss();
+
+                    item.setName(edname.getText().toString());
+                    item.setPrice(edprice.getText().toString());
+
+                    spicelist.child(key).setValue(item);
+                    Snackbar.make(rootLayout,"Spice"+item.getName()+"was added",Snackbar.LENGTH_SHORT).show();
+
+
+
+            }
+        });
+        alert.setNegativeButton("No", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.dismiss();
+            }
+        });
+        alert.show();
+    }
+
+    private void changeImgae(final Spice item) {
+        if (saveuri !=null){
+            final ProgressDialog pD=new ProgressDialog(this);
+            pD.setMessage("Uploading.......");
+            pD.show();
+
+            String imageName=UUID.randomUUID().toString();
+            final StorageReference imageFolder=storageReference.child("images/"+imageName);
+            imageFolder.putFile(saveuri).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+                @Override
+                public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+                    pD.dismiss();
+                    Toast.makeText(Spicelist.this,"Uploaded !!!",Toast.LENGTH_SHORT).show();
+                    imageFolder.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
+                        @Override
+                        public void onSuccess(Uri uri) {
+
+                            item.setImage(uri.toString());
+                        }
+                    });
+                }
+            })
+                    .addOnFailureListener(new OnFailureListener() {
+                        @Override
+                        public void onFailure(@NonNull Exception e) {
+                            pD.dismiss();
+                            Toast.makeText(Spicelist.this,""+e.getMessage(),Toast.LENGTH_SHORT).show();
+                        }
+                    }).addOnProgressListener(new OnProgressListener<UploadTask.TaskSnapshot>() {
+                @Override
+                public void onProgress(UploadTask.TaskSnapshot taskSnapshot) {
+                    double progress=(100.0 * taskSnapshot.getBytesTransferred()/taskSnapshot.getTotalByteCount());
+                    pD.setMessage("Uploaded"+progress+"%");
+                }
+            });
+
+        }
     }
 }
