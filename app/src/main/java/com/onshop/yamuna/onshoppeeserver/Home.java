@@ -276,11 +276,14 @@ public class Home extends AppCompatActivity
 
         if (id == R.id.nav_camera) {
             // Handle the camera action
-        } else if (id == R.id.nav_gallery) {
 
+        } else if (id == R.id.nav_gallery) {
+            Intent i=new Intent(this,Orderstatus.class);
+            startActivity(i);
         }
 
         else if (id == R.id.nav_manage) {
+
 
         } else if (id == R.id.nav_share) {
 
