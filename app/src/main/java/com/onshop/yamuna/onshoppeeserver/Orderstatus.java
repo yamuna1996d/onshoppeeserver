@@ -6,6 +6,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
@@ -47,7 +48,7 @@ public class Orderstatus extends AppCompatActivity {
         adapter=new FirebaseRecyclerAdapter<Request, OrderViewHolder>(Request.class,R.layout.order,
                 OrderViewHolder.class,requests) {
             @Override
-            protected void populateViewHolder(OrderViewHolder orderViewHolder, Request request, int position) {
+            protected void populateViewHolder(OrderViewHolder orderViewHolder, final Request request, int position) {
                 orderViewHolder.txtid.setText(adapter.getRef(position).getKey());
                 orderViewHolder.txtstat.setText(Common.convertStringtoStatus(request.getStatus()));
                 orderViewHolder.txtaddress.setText(request.getAddress());
@@ -56,7 +57,10 @@ public class Orderstatus extends AppCompatActivity {
                 orderViewHolder.setItemClickListener(new ItemClickListener() {
                     @Override
                     public void onClick(View view, int position, boolean isLongClick) {
-                        //for fix if app crash
+                        Intent track=new Intent(Orderstatus.this,Google_map.class);
+                        Common.currentRequest=request;
+                        startActivity(track);
+
                     }
                 });
             }
