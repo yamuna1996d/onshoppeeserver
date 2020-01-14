@@ -16,8 +16,12 @@ import android.view.LayoutInflater;
 import android.view.View;
 
 import com.google.android.material.navigation.NavigationView;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.Query;
+import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.OnProgressListener;
 import com.google.firebase.storage.StorageReference;
@@ -25,6 +29,7 @@ import com.google.firebase.storage.UploadTask;
 import com.onshop.yamuna.onshoppeeserver.Common.Common;
 import com.onshop.yamuna.onshoppeeserver.Interface.ItemClickListener;
 import com.onshop.yamuna.onshoppeeserver.Models.Category;
+import com.onshop.yamuna.onshoppeeserver.Service.ListenOrder;
 import com.onshop.yamuna.onshoppeeserver.ViewHolder.MenuViewHolder;
 import com.rengwuxian.materialedittext.MaterialEditText;
 import com.rey.material.widget.Button;
@@ -101,6 +106,10 @@ public class Home extends AppCompatActivity
         layoutManager=new LinearLayoutManager(this);
         recyclerView.setLayoutManager(layoutManager);
         loadlist();
+
+        //call Service
+        Intent service= new Intent(Home.this,ListenOrder.class);
+        startService(service);
 
     }
 
@@ -315,8 +324,25 @@ public class Home extends AppCompatActivity
     }
 
     private void deleteCategory(String key) {
+        DatabaseReference spices= database.getReference("Spice");
+        Query spiceCategory= spices.orderByChild("menuId").equalTo(key);
+        spiceCategory.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                for (DataSnapshot postSnapshot:dataSnapshot.getChildren()){
+                    postSnapshot.getRef().removeValue();
+                }
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
+
         categories.child(key).removeValue();
         Toast.makeText(this,"Spice deleted !!!!",Toast.LENGTH_SHORT).show();
+
     }
 
     private void showUpdateDialoge(final String key, final Category item) {

@@ -47,7 +47,12 @@
 
         <activity
             android:name=".Google_map"
-            android:label="@string/title_activity_google_map"></activity>
+            android:label="@string/title_activity_google_map" />
+
+        <service
+            android:name=".Service.ListenOrder"
+            android:enabled="true"
+            android:exported="true"></service>
     </application>
 
 </manifest>
